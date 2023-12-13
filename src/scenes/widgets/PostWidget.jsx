@@ -5,6 +5,7 @@ import {
     ShareOutlined,
 } from "@mui/icons-material";
 import { Box, Divider, IconButton, Typography, useTheme } from "@mui/material";
+import DeleteOutline from '@mui/icons-material/DeleteOutline';
 import FlexBetween from "components/FlexBetween";
 import Friend from "components/Friend";
 import WidgetWrapper from "components/WidgetWrapper";
@@ -22,6 +23,7 @@ const PostWidget = ({
     userPicturePath,
     likes,
     comments,
+    handleDelete
 }) => {
     const [isComments, setIsComments] = useState(false);
     const dispatch = useDispatch();
@@ -35,7 +37,7 @@ const PostWidget = ({
     const primary = palette.primary.main;
 
     const patchLike = async () => {
-        const response = await fetch(`https://insightpress-server.onrender.com/posts/${postId}/like`, {
+        const response = await fetch(`http://localhost:6001/posts/${postId}/like`, {
             method: "PATCH",
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -46,6 +48,8 @@ const PostWidget = ({
         const updatedPost = await response.json();
         dispatch(setPost({ post: updatedPost }));
     };
+
+
 
     return (
         <WidgetWrapper m="2rem 0">
@@ -64,7 +68,7 @@ const PostWidget = ({
                     height="auto"
                     alt="post"
                     style={{ borderRadius: "0.75rem", marginTop: "0.75rem" }}
-                    src={`https://insightpress-server.onrender.com/assets/${picturePath}`}
+                    src={`http://localhost:6001/assets/${picturePath}`}
                 />
             )}
             <FlexBetween mt="0.25rem">
@@ -79,6 +83,12 @@ const PostWidget = ({
                         </IconButton>
                         <Typography>{likeCount}</Typography>
                     </FlexBetween>
+
+                    {postUserId === loggedInUserId && (
+                        <IconButton onClick={() => handleDelete(postId)}>
+                            <DeleteOutline />
+                        </IconButton>
+                    )}
 
                     <FlexBetween gap="0.3rem">
                         <IconButton onClick={() => setIsComments(!isComments)}>

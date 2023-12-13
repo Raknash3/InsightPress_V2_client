@@ -28,8 +28,8 @@ const HomePage = () => {
                     <UserWidget userId={_id} picturePath={picturePath} />
                     <Box m="2rem 0" />
                     <FriendListWidget userId={_id} />
-
                 </Box>
+
                 <Box
                     flexBasis={isNonMobileScreens ? "42%" : undefined}
                     mt={isNonMobileScreens ? undefined : "2rem"}>

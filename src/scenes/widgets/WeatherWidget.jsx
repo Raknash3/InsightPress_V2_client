@@ -37,7 +37,7 @@ const WeatherWidget = ({ location }) => {
                 width="100%"
                 height="auto"
                 alt="advert"
-                src="https://insightpress-server.onrender.com/assets/weather2.jpg"
+                src="http://localhost:6001/assets/weather2.jpg"
                 style={{ borderRadius: "0.75rem", margin: "0.75rem 0" }}
             />
 
