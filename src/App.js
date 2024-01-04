@@ -3,6 +3,7 @@ import HomePage from "scenes/homePage";
 import LoginPage from "scenes/loginPage";
 import ProfilePage from "scenes/profilePage";
 import WelcomePage from "scenes/welcomePage";
+import NewsPage from "scenes/NewsPage";
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { CssBaseline, ThemeProvider } from "@mui/material";
@@ -30,6 +31,7 @@ function App() {
               path="/profile/:userId"
               element={isAuth ? <ProfilePage /> : <Navigate to="/" />}
             />
+            <Route path="/search/:searchTerm" element={<NewsPage />} />
           </Routes>
         </ThemeProvider>
       </BrowserRouter>

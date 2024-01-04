@@ -10,6 +10,7 @@ import UserWidget from "scenes/widgets/UserWidget";
 import UserImage from "components/UserImage";
 import FlexBetween from "components/FlexBetween";
 import WidgetWrapper from "components/WidgetWrapper";
+import UserWidget2 from "scenes/widgets/UserWidget2";
 
 
 const ProfilePage = () => {
@@ -19,7 +20,14 @@ const ProfilePage = () => {
     const [occupation, setOccupation] = useState('');
     const [location, setLocation] = useState('');
     const { userId } = useParams();
+
+    {/*const [currentPassword, setCurrentPassword] = useState('');
+    const [newPassword, setNewPassword] = useState('');
+    const [confirmNewPassword, setConfirmNewPassword] = useState('');
+    const [errorMessage, setErrorMessage] = useState(''); */}
+
     const token = useSelector((state) => state.token);
+    const loggedInUserId = useSelector((state) => state.user._id);
     const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
 
     const getUser = async () => {
@@ -38,6 +46,8 @@ const ProfilePage = () => {
 
 
     const updateUser = async () => {
+
+
         const response = await fetch(`http://localhost:6001/users/${userId}`, {
             method: "PUT",
             headers: {
@@ -54,6 +64,18 @@ const ProfilePage = () => {
         const data = await response.json();
         setUser(data);
         //console.log(user)
+
+        {/*try {
+           
+
+        } catch (error) {
+            console.error('updateUser error', error);
+            setErrorMessage(error.message);
+        } */}
+
+
+
+
     };
 
     useEffect(() => {
@@ -78,79 +100,112 @@ const ProfilePage = () => {
                 justifyContent="center"
             >
                 <Box flexBasis={isNonMobileScreens ? "40%" : undefined}>
-                    {/*<UserWidget userId={userId} picturePath={user.picturePath} /> 
-                    <Box m="2rem 0" />*/}
-
-                    <Box component={WidgetWrapper}>
-                        <Box component={FlexBetween} gap="0.5rem" pb="1.1rem">
-                            <Box component={FlexBetween} gap="1rem">
-                                <UserImage image={user.picturePath} />
-                                <Box>
-                                    <TextField
-                                        label="First Name"
-                                        value={firstName}
-                                        onChange={(e) => setFirstName(e.target.value)}
-                                        variant="outlined"
-                                        margin="normal"
-                                        style={{ marginRight: '10px' }}
-                                    />
-                                    <TextField
-                                        label="Last Name"
-                                        value={lastName}
-                                        onChange={(e) => setLastName(e.target.value)}
-                                        variant="outlined"
-                                        margin="normal"
-
-                                    />
-                                    <TextField
-                                        label="Occupation"
-                                        value={occupation}
-                                        onChange={(e) => setOccupation(e.target.value)}
-                                        variant="outlined"
-                                        margin="normal"
-                                        style={{ marginRight: '10px' }}
-                                    />
-                                    <TextField
-                                        label="Location"
-                                        value={location}
-                                        onChange={(e) => setLocation(e.target.value)}
-                                        variant="outlined"
-                                        margin="normal"
-
-                                    />
-
-                                    {/* <Button
-                                        variant="contained"
-                                        component="label"
-                                        margin="normal"
-                                        style={{ marginRight: '20px', marginLeft: '10px' }}
-
-                                    >
-                                        Upload Profile Photo
-                                        <input
-                                            type="file"
-                                            hidden
+                    {loggedInUserId === userId ? (
+                        <Box component={WidgetWrapper}>
+                            <Box component={FlexBetween} gap="0.5rem" pb="1.1rem">
+                                <Box component={FlexBetween} gap="1rem">
+                                    <UserImage image={user.picturePath} />
+                                    <Box>
+                                        <TextField
+                                            label="First Name"
+                                            value={firstName}
+                                            onChange={(e) => setFirstName(e.target.value)}
+                                            variant="outlined"
+                                            margin="normal"
+                                            style={{ marginRight: '10px' }}
                                         />
-                                    </Button> */}
+                                        <TextField
+                                            label="Last Name"
+                                            value={lastName}
+                                            onChange={(e) => setLastName(e.target.value)}
+                                            variant="outlined"
+                                            margin="normal"
 
-                                    <Button
-                                        variant="contained"
-                                        color="primary"
-                                        onClick={updateUser}
+                                        />
+                                        <TextField
+                                            label="Occupation"
+                                            value={occupation}
+                                            onChange={(e) => setOccupation(e.target.value)}
+                                            variant="outlined"
+                                            margin="normal"
+                                            style={{ marginRight: '10px' }}
+                                        />
+                                        <TextField
+                                            label="Location"
+                                            value={location}
+                                            onChange={(e) => setLocation(e.target.value)}
+                                            variant="outlined"
+                                            margin="normal"
 
-                                    >
-                                        Update Profile
-                                    </Button>
+                                        />
+                                        {/*
+                                        <TextField
+                                            label="Current Password"
+                                            type="password"
+                                            value={currentPassword}
+                                            onChange={(e) => setCurrentPassword(e.target.value)}
+                                            variant="outlined"
+                                            margin="normal"
+                                            style={{ marginRight: '10px' }}
+                                        />
+                                        <TextField
+                                            label="New Password"
+                                            type="password"
+                                            value={newPassword}
+                                            onChange={(e) => setNewPassword(e.target.value)}
+                                            variant="outlined"
+                                            margin="normal"
+                                        />
+                                        <TextField
+                                            label="Confirm New Password"
+                                            type="password"
+                                            value={confirmNewPassword}
+                                            onChange={(e) => setConfirmNewPassword(e.target.value)}
+                                            variant="outlined"
+                                            margin="normal"
+                                            style={{ marginRight: '10px' }}
+                                        /> */}
 
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                            onClick={updateUser}
+                                            style={{ marginTop: '25px' }}
+                                        >
+                                            Update Profile
+                                        </Button>
+                                    </Box>
                                 </Box>
                             </Box>
+                            <UserWidget2 userId={userId} picturePath={user.picturePath} />
                         </Box>
 
 
-                    </Box>
+
+                    ) : (
+                        // The user is viewing someone else's profile
+                        <>
+                            <UserWidget userId={userId} picturePath={user.picturePath} />
+                            <Box m="2rem 0" />
+                        </>
+                    )}
+
+
+
+                    {/*<UserWidget userId={userId} picturePath={user.picturePath} /> 
+                    <Box m="2rem 0" />*/}
+
+
+
+
+
+
 
 
                     <Box m="2rem 0" />
+
+
+
                     <FriendListWidget userId={userId} />
 
                 </Box>

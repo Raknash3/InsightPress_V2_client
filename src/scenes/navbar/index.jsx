@@ -31,6 +31,8 @@ const Navbar = () => {
     const navigate = useNavigate();
     const user = useSelector((state) => state.user);
     const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
+    const [searchTerm, setSearchTerm] = useState('');
+
 
     const theme = useTheme();
     const neutralLight = theme.palette.neutral.light;
@@ -41,6 +43,15 @@ const Navbar = () => {
 
     const fullName = `${user.firstName} ${user.lastName}`;
 
+    const handleSearchChange = (event) => {
+        setSearchTerm(event.target.value);
+    };
+
+    const handleSearchClick = () => {
+        if (searchTerm) {
+            navigate(`/search/${searchTerm}`);
+        }
+    };
     return (
         <FlexBetween padding="1rem 6%" backgroundColor={alt}>
             <FlexBetween gap="1.75rem">
@@ -65,8 +76,8 @@ const Navbar = () => {
                         gap="3rem"
                         padding="0.1rem 1.5rem"
                     >
-                        <InputBase placeholder="Search..." />
-                        <IconButton>
+                        <InputBase placeholder="Search..." value={searchTerm} onChange={handleSearchChange} />
+                        <IconButton onClick={handleSearchClick}>
                             <Search />
                         </IconButton>
                     </FlexBetween>
